@@ -45,10 +45,10 @@ public class Deque<Item> implements Iterable<Item> {
     public void addFirst(Item item) {
         // TODO: Create a node and link it at the front; update head/tail pointers.
         Node n = new Node();
-        n.next = head;
-        n.prev = null;
-        n.item = item;
-        size++;
+        head.next = n;
+        n.next.prev = n;
+        n.prev = head;
+
     }
 
     /** Add an item to the back; reject null items with IllegalArgumentException. */
@@ -59,7 +59,9 @@ public class Deque<Item> implements Iterable<Item> {
             Node n = new Node();
             n.item = item;
             n.prev = tail;
-            tail.next = n;
+            if (tail != null) {
+                tail.next=n;
+            }
             tail = n;
             size++;
         }
