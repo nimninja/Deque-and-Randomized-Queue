@@ -14,7 +14,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     /** Construct an empty randomized queue. */
     public RandomizedQueue() {
         // TODO: Initialize an empty array-backed randomized queue. Resize by doubling when full and halving when quarter full.
-        items = ;
+        //items = new Item[size];
     }
 
     /** Return whether the randomized queue is empty. */

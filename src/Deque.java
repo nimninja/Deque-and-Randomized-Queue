@@ -12,6 +12,7 @@ public class Deque<Item> implements Iterable<Item> {
         Item item;
         Node next;
         Node prev;
+
     }
 
     private Node head;
@@ -21,8 +22,11 @@ public class Deque<Item> implements Iterable<Item> {
     /** Construct an empty deque. */
     public Deque() {
         // TODO: Initialize an empty linked list.
-        Node head = new Node();
-        Node tail = new Node();
+        head = new Node();
+        tail = new Node();
+        head.next = tail;
+        tail.prev = head;
+        size = 0;
 
 
     }
@@ -62,11 +66,10 @@ public class Deque<Item> implements Iterable<Item> {
         else {
             Node n = new Node();
             n.item = item;
-            n.prev = tail;
-            if (tail != null) {
-                tail.next=n;
-            }
-            tail = n;
+            n.prev = tail.prev;
+            n.next = tail;
+            tail.prev = n;
+            n.prev.next = n;
             size++;
         }
     }
@@ -74,26 +77,30 @@ public class Deque<Item> implements Iterable<Item> {
     /** Remove and return the front item; throw NoSuchElementException if empty. */
     public Item removeFirst() throws NoSuchElementException {
         // TODO: Remove the front node and update head/tail pointers.
-        if (head.item == null) {throw new NoSuchElementException();}
+        if (head.next.item == null) {throw new NoSuchElementException();}
         else {
-            head = head.next;
-            head.prev.next = null;
+            Item ret = head.next.item;
+
+            head.next = head.next.next;
+            head.next.prev = head;
             size--;
+            return ret;
         }
-        return null;
+
     }
 
     /** Remove and return the back item; throw NoSuchElementException if empty. */
     public Item removeLast() throws NoSuchElementException{
         // TODO: Remove the back node and update head/tail pointers.
-        if (tail.item == null) {throw new NoSuchElementException();}
+        if (tail.prev.item == null) {throw new NoSuchElementException();}
         else {
-            tail = tail.prev;
-            tail.next.prev = null;
-            size--;
-        }
+            Item ret = tail.prev.item;
 
-        return null;
+            tail.prev = tail.prev.prev;
+            tail.prev.next = tail;
+            size--;
+            return ret;
+        }
     }
 
     /** Return an iterator from front to back; next() and remove() follow the specified exceptions. */
