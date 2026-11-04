@@ -1,3 +1,4 @@
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -34,8 +35,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // TODO: Add the item to the backing array, resizing as needed.
         if (item == null) {throw new IllegalArgumentException();}
         else {
-            items[size] = item;
-            size++;
+            if (items.length<=(size++)) {
+                Item[] tmp = (Item[]) new
+            }
         }
     }
 
@@ -67,19 +69,35 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
 
 
-        return null;
+        return new RandomizedQueueIterator();
     }
     private class RandomizedQueueIterator implements Iterator<Item>{
         private Item[] shuffledItems;
         private int current;
+        public RandomizedQueueIterator() {
+            shuffledItems = (Item[]) new Object[size];
+            for (int i = 0; i < size; i++) {
+                shuffledItems[i] = items[i];
+            }
+            for (int i = 0; i < size; i++) {
+                int x = (int) (Math.random()*(i+1));
+                Item tmp = shuffledItems[x];
+                shuffledItems[i] = shuffledItems[x];
+                shuffledItems[x] = tmp;
+            }
+            current = 0;
+        }
         @Override
         public boolean hasNext() {
-            return false;
+            return current < size - 1;
         }
 
         @Override
         public Item next() {
-            return null;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return shuffledItems[current+1];
         }
     }
 
