@@ -182,19 +182,19 @@ public class RandomizedQueueTest {
         // Uncomment each test as you implement the corresponding method:
 
         testRandomizedQueueConstructor();
-        // testRandomizedQueueIsEmpty();
-        // testRandomizedQueueSize();
-        // testRandomizedQueueEnqueue();
-        // testRandomizedQueueEnqueueNull();
-        // testRandomizedQueueDequeue();
-        // testRandomizedQueueDequeueEmpty();
-        // testRandomizedQueueSample();
-        // testRandomizedQueueSampleEmpty();
-        // testRandomizedQueueIterator();
-        // testRandomizedQueueIteratorIndependence();
-        // testRandomizedQueueIteratorRandomOrder();
-        // testRandomizedQueueIteratorNextExhausted();
-        // testRandomizedQueueIteratorRemoveUnsupported();
+        testRandomizedQueueIsEmpty();
+        testRandomizedQueueSize();
+        testRandomizedQueueEnqueue();
+        testRandomizedQueueEnqueueNull();
+        testRandomizedQueueDequeue();
+        testRandomizedQueueDequeueEmpty();
+        testRandomizedQueueSample();
+        testRandomizedQueueSampleEmpty();
+        testRandomizedQueueIterator();
+        testRandomizedQueueIteratorIndependence();
+        testRandomizedQueueIteratorRandomOrder();
+        testRandomizedQueueIteratorNextExhausted();
+        testRandomizedQueueIteratorRemoveUnsupported();
 
         System.out.println("\nSummary: " + passed + " passed, " + failed + " failed.");
     }

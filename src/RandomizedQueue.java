@@ -16,6 +16,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public RandomizedQueue() {
         // TODO: Initialize an empty array-backed randomized queue. Resize by doubling when full and halving when quarter full.
         items = (Item[]) new Object[2];
+        size = 0;
     }
 
     /** Return whether the randomized queue is empty. */
@@ -34,23 +35,34 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         // TODO: Add the item to the backing array, resizing as needed.
         if (item == null) {throw new IllegalArgumentException();}
-        else {
-            if (items.length<=(size++)) {
-                Item[] tmp = (Item[]) new
+        if (size == items.length) {
+            Item[] temp = (Item[]) new Object[items.length*2];
+            for (int i = 0; i < size; i++) {
+                temp[i] = items[i];
             }
+            items = temp;
         }
+        items[size] = item;
+        size++;
     }
 
     /** Remove and return a uniformly random item; throw NoSuchElementException if empty. */
     public Item dequeue() {
         // TODO: Pick a random index between 0 and size-1; swap the chosen item with the last item, then remove and resize as needed.
+        if (isEmpty()) {throw new NoSuchElementException();}
+
         int rand = (int) (Math.random() * size);
-        Item save;
-        if (items[rand] == null) {
-            throw new NoSuchElementException();
-        } else {
-            save = items[rand];
-            items[rand] = null;
+        Item save = items[rand];
+        items[rand] = items[size-1];
+        items[size-1] = null;
+        size--;
+
+        if (size == items.length /4) {
+            Item[] temp = (Item[]) new Object[items.length/2];
+            for (int i = 0; i < size; i++) {
+                temp[i] = items[i];
+            }
+            items = temp;
         }
         return save;
     }
@@ -58,6 +70,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     /** Return a uniformly random item without removing it; throw NoSuchElementException if empty. */
     public Item sample() {
         // TODO: Pick a random index between 0 and size-1 and return that array item without removing it.
+        if (isEmpty()) {throw new NoSuchElementException();}
+
         int rand = (int) (Math.random() * size);
         return items[rand];
     }
@@ -81,7 +95,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             }
             for (int i = 0; i < size; i++) {
                 int x = (int) (Math.random()*(i+1));
-                Item tmp = shuffledItems[x];
+                Item tmp = shuffledItems[i];
                 shuffledItems[i] = shuffledItems[x];
                 shuffledItems[x] = tmp;
             }
@@ -89,7 +103,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         @Override
         public boolean hasNext() {
-            return current < size - 1;
+            return current < shuffledItems.length;
         }
 
         @Override
@@ -97,7 +111,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return shuffledItems[current+1];
+            Item save = shuffledItems[current];
+            current++;
+            return save;
         }
     }
 
